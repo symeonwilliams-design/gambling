@@ -1,12 +1,134 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arena Web Dev App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+import { useMemo, useState } from "react";
+
+const warningSigns = [
+  "Lying about how much time or money you spend gambling",
+  "Borrowing money or selling belongings to keep betting",
+  "Feeling restless, anxious, or irritable when trying to stop",
+  "Missing work, school, or family responsibilities",
+  "Trying to win back losses with bigger, riskier bets",
+];
+
+const preventionSteps = [
+  "Set a strict weekly entertainment budget and never chase losses.",
+  "Use app and casino self-exclusion tools to limit access.",
+  "Leave cards at home and only carry fixed cash if you play.",
+  "Schedule gambling-free activities with friends and family.",
+  "Talk early to a counselor or support group if urges grow.",
+];
+
+export function App() {
+  const [checks, setChecks] = useState<number[]>([]);
+
+  const riskLevel = useMemo(() => {
+    if (checks.length >= 4) return "High concern";
+    if (checks.length >= 2) return "Moderate concern";
+    return "Low concern";
+  }, [checks.length]);
+
+  const toggleCheck = (index: number) => {
+    setChecks((prev) => (prev.includes(index) ? prev.filter((item) => item !== index) : [...prev, index]));
+  };
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-[#f8f3e8] text-[#2f2112]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(195,113,40,0.25),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(66,92,69,0.2),transparent_22%),linear-gradient(160deg,#f8f3e8_0%,#efe5cd_42%,#fdf8eb_100%)]" />
+      <div className="absolute -right-24 top-16 h-72 w-72 rounded-full border border-[#5e6f57]/30" />
+      <div className="absolute -left-20 bottom-20 h-64 w-64 rounded-full border border-[#bc6b26]/20" />
+
+      <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10 md:px-10 lg:py-16">
+        <section className="reveal rounded-3xl border border-[#6a5436]/20 bg-[#fff8e7]/75 p-7 shadow-[0_20px_60px_-35px_rgba(75,49,20,0.4)] backdrop-blur-sm md:p-10">
+          <p className="text-sm uppercase tracking-[0.2em] text-[#8a5420]">Public Service Announcement</p>
+          <h1 className="mt-4 font-['Bebas_Neue'] text-5xl uppercase leading-none tracking-wide text-[#3c240f] md:text-7xl">
+            Compulsive Gambling Can Quietly Take Over
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[#4e3823] md:text-xl">
+            It starts as entertainment, then becomes a cycle of chasing losses, hiding behavior, and living in stress.
+            Compulsive gambling is a real mental health condition, and recovery is possible with support.
+          </p>
+          <div className="mt-7 grid gap-4 md:grid-cols-3">
+            {[
+              ["6M+", "Adults in the U.S. affected by severe gambling harm each year"],
+              ["24/7", "Urges can feel nonstop without limits and accountability"],
+              ["1 Call", "Can be the turning point toward treatment and recovery"],
+            ].map(([stat, text], index) => (
+              <div key={stat} className="reveal rounded-2xl border border-[#6d593f]/20 bg-[#f7edd6]/90 p-4" style={{ animationDelay: `${index * 120}ms` }}>
+                <p className="font-['Bebas_Neue'] text-4xl text-[#2f5a40]">{stat}</p>
+                <p className="text-sm leading-relaxed text-[#4c3a28]">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-2">
+          <article className="reveal rounded-3xl border border-[#603f1f]/25 bg-[#fff9ea]/80 p-6 shadow-[0_18px_45px_-35px_rgba(60,36,15,0.6)] md:p-8">
+            <h2 className="font-['Bebas_Neue'] text-4xl uppercase tracking-wide text-[#452a14]">Know the Warning Signs</h2>
+            <ul className="mt-4 space-y-3 text-[#3e2e1f]">
+              {warningSigns.map((sign) => (
+                <li key={sign} className="flex gap-3 rounded-xl bg-[#f3e4c3]/60 p-3">
+                  <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#bc6b26]" />
+                  <span>{sign}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          <article className="reveal rounded-3xl border border-[#2f5a40]/25 bg-[#f6f1df]/85 p-6 shadow-[0_18px_45px_-35px_rgba(47,90,64,0.7)] md:p-8" style={{ animationDelay: "120ms" }}>
+            <h2 className="font-['Bebas_Neue'] text-4xl uppercase tracking-wide text-[#20402d]">Prevention That Works</h2>
+            <ol className="mt-4 space-y-3 text-[#2f3f30]">
+              {preventionSteps.map((step, index) => (
+                <li key={step} className="flex gap-3 rounded-xl bg-[#e8ecd8]/90 p-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2f5a40] text-sm font-bold text-[#f4f8ea]">
+                    {index + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+        </section>
+
+        <section className="reveal grid gap-6 rounded-3xl border border-[#66421d]/30 bg-[#fef8e8]/85 p-6 shadow-[0_20px_60px_-40px_rgba(59,36,14,0.65)] md:grid-cols-2 md:p-8" style={{ animationDelay: "180ms" }}>
+          <div>
+            <h2 className="font-['Bebas_Neue'] text-4xl uppercase tracking-wide text-[#4a2f16]">Quick Self-Check</h2>
+            <p className="mt-2 text-[#4a3825]">Check any signs that have happened in the last 6 months:</p>
+            <div className="mt-4 space-y-2">
+              {warningSigns.map((sign, index) => {
+                const active = checks.includes(index);
+                return (
+                  <button
+                    key={sign}
+                    type="button"
+                    onClick={() => toggleCheck(index)}
+                    className={`w-full rounded-xl border p-3 text-left transition ${
+                      active
+                        ? "border-[#a9551a] bg-[#f3d6b2] text-[#522d0e]"
+                        : "border-[#8b734f]/25 bg-[#fcf4df] text-[#4f3d2b] hover:bg-[#f7ebcf]"
+                    }`}
+                  >
+                    {sign}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-[#355942]/20 bg-[#edf1e3] p-5">
+            <p className="text-xs uppercase tracking-[0.15em] text-[#48604f]">Awareness Result</p>
+            <p className="mt-2 font-['Bebas_Neue'] text-5xl uppercase text-[#1f3f2b]">{riskLevel}</p>
+            <p className="mt-3 text-[#2e4635]">
+              {checks.length >= 2
+                ? "You may be at risk of compulsive gambling harm. Talk to someone you trust and contact a helpline for guidance today."
+                : "This is not a diagnosis. Keep protective habits in place and check in with yourself regularly."}
+            </p>
+            <div className="mt-6 rounded-xl bg-[#2f5a40] p-4 text-[#f0f6e9]">
+              <p className="font-semibold">Need help now?</p>
+              <p className="mt-1 text-sm">
+                Call or text 1-800-GAMBLER (U.S.) or contact your local mental health hotline for immediate support.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
